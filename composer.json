@@ -9,6 +9,6 @@
         }
     ],
     "require": {
-
+        "ddliu/requery": "~0.1"
     }
 }

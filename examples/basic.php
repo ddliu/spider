@@ -5,7 +5,24 @@ use ddliu\Spider\Parser\ParseHelper;
 $spider = new Spider(array(
     'useragent' => '',
     'proxy' => '',
+    'autorefer' => true,
 ));
+
+function indexPage($spider, $input) {
+    parseAll()
+    each(function() {
+        $spider->addTask()
+    })
+}
+
+function detailPage($spider, $input) {
+
+}
+
+$spider->addTask(array(
+    'url' => 'http://example.com',
+    'processor' => 'indexPage',
+))->run();
 
 $spider->addTask(array(
     'id' => 1,

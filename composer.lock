@@ -1,0 +1,50 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "624d166489fd54abbb25bab725f4f04b",
+    "packages": [
+        {
+            "name": "ddliu/requery",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddliu/requery.git",
+                "reference": "08f4aba1e3385a2a22f6b89c0d55abec278d29a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddliu/requery/zipball/08f4aba1e3385a2a22f6b89c0d55abec278d29a4",
+                "reference": "08f4aba1e3385a2a22f6b89c0d55abec278d29a4",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ddliu\\requery\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "dong",
+                    "email": "ddliuhb@gmail.com"
+                }
+            ],
+            "description": "Query text data with the power of Regular Expression.",
+            "time": "2014-11-03 15:20:16"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "platform": [],
+    "platform-dev": []
+}
