@@ -1,0 +1,14 @@
+{
+    "name": "ddliu/spider",
+    "description": "Light weight spider for the web.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "dong",
+            "email": "ddliuhb@gmail.com"
+        }
+    ],
+    "require": {
+
+    }
+}
