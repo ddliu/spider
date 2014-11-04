@@ -10,7 +10,7 @@ class Task implements \ArrayAccess {
     const STATUS_CANCLED = 4;
     const STATUS_TERMINATED = 5;
 
-    protected $status
+    protected $status = self::STATUS_PENDING;
     protected $data;
     protected $oldData;
 
@@ -28,7 +28,7 @@ class Task implements \ArrayAccess {
     }
 
     public function start() {
-        $this->status = self::
+        $this->status = self::STATUS_WORKING;
     }
 
     public function done() {

@@ -4,12 +4,11 @@ namespace ddliu\spider\Pipe;
 class FunctionPipe extends BasePipe {
     protected $func;
 
-    public function __contruct($spider, $func) {
-        $this->spider = $spider;
+    public function __construct($func) {
         $this->func = $func;
     }
 
     public function pipe($task) {
-        $this->$func($spider, $task);
+        call_user_func($this->func, $this->spider, $task);
     }
 }

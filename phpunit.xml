@@ -1,0 +1,9 @@
+<phpunit
+    bootstrap="vendor/autoload.php"
+    >
+  <testsuites>
+    <testsuite name="ddliu.spider">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
