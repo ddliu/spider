@@ -8,11 +8,18 @@ $spider = new Spider(array(
     'autorefer' => true,
 ));
 
+$spider
+    ->pipe()
+    ->pipe()
+
+
 function indexPage($spider, $input) {
+    $input['uri'];
+    $input['content'];
     parseAll()
     each(function() {
-        $spider->addTask()
-    })
+        $spider->addTask($current, $input);
+    });
 }
 
 function detailPage($spider, $input) {
@@ -22,22 +29,20 @@ function detailPage($spider, $input) {
 $spider->addTask(array(
     'url' => 'http://example.com',
     'processor' => 'indexPage',
+    'input' => array(
+        'url' => 'xxx',
+    ),
 ))->run();
 
-$spider->addTask(array(
-    'id' => 1,
-    'input' => array(),
-    'url' => '',
-    'processor' => function($spider, $input) {
-        $url = $input['url'];
-        $content = $spider->httpclient->get($url);
-        $content = ParseHelper::mustExtract($content, '<div></div>');
-        ParseHelper::mustExtractAll($content, '<li></li>');
+processor vs pipe
 
-        ParseHelper::mustExtractChain($content, '<div></div>', )
 
-        $q = new RegexpQuery($content);
 
-        $q->query('<div>(?P<content>.*)</div>')['content']->then(function($context))->then()
-    }
-))
+$task => pipe => processor
+
+task:
+    id
+    input:
+        uri: xxx
+        _plugin: {},
+        _another_plugin: {},

@@ -1,9 +1,11 @@
 <?php
 namespace ddliu\spider;
+use ddliu\spider\Pipe\PipeInterface;
 
 class Spider {
-    public function addTask($taskInfo) {
-
+    protected $pipes = array();
+    public function addTask($data) {
+        $task = new Task($data);
     }
 
     public function run() {
@@ -16,6 +18,30 @@ class Spider {
     }
 
     public function pipe($pipe) {
-        $this->pipes[] = $pipe;
+        $this->pipes[] = $this->makePipe($pipe);
+        return $this;
+    }
+
+    protected function makePipe($pipe) {
+        if ($pipe instanceof PipeInterface) {
+            return $pipe;
+        } elseif (is_callable($pipe)) {
+            return new FunctionPipe($this, $pipe);
+        } else {
+            throw new SpiderException('Invalid pipe');
+        }
+    }
+
+    protected function process($task) {
+        $task->start();
+        foreach ($this->pipes as $pipe) {
+            $pipe->pipe($task);
+            if ($task->isEnded()) {
+                break;
+            }
+        }
+        if (!$task->isEnded()) {
+            $task->
+        }
     }
 }
