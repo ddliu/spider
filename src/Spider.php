@@ -7,7 +7,13 @@ class Spider {
     protected $pipes = array();
     protected $tasks = array();
     public function addTask($data) {
-        $task = new Task($data);
+        if (!$data instanceof Task) {
+            $task = new Task($data);
+        } else {
+            $task = $data;
+        }
+
+        $task->spider = $this;
         $this->tasks[] = $task;
 
         return $this;

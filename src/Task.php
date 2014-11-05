@@ -12,11 +12,11 @@ class Task implements \ArrayAccess {
 
     protected $status = self::STATUS_PENDING;
     protected $data;
-    protected $oldData;
+    public $parent;
+    public $spider;
 
     public function __construct($data) {
         $this->data = $data;
-        $this->oldData = $data;
     }
 
     public function set($key, $data) {
@@ -53,5 +53,11 @@ class Task implements \ArrayAccess {
 
     public function offsetUnset($offset) {
         unset($this->data[$offset]);
+    }
+
+    public function fork($data) {
+        $task = new Task($data);
+        $task->parent = $this;
+        $this->spider->addTask($task);
     }
 }

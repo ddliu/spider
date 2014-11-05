@@ -4,8 +4,41 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "624d166489fd54abbb25bab725f4f04b",
+    "hash": "2aae77ca2342f5e2354ea3670dace69f",
     "packages": [
+        {
+            "name": "ddliu/normurl",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddliu/normurl.git",
+                "reference": "20255dce9403731170356a7b4fb7e95a8adf45b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddliu/normurl/zipball/20255dce9403731170356a7b4fb7e95a8adf45b0",
+                "reference": "20255dce9403731170356a7b4fb7e95a8adf45b0",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ddliu\\normurl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "dong",
+                    "email": "ddliuhb@gmail.com"
+                }
+            ],
+            "description": "Normalize URL",
+            "time": "2014-11-05 10:15:29"
+        },
         {
             "name": "ddliu/requery",
             "version": "v0.1.0",
