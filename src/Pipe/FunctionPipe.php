@@ -8,7 +8,7 @@ class FunctionPipe extends BasePipe {
         $this->func = $func;
     }
 
-    public function pipe($task) {
+    public function run($task) {
         call_user_func($this->func, $this->spider, $task);
     }
 }

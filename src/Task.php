@@ -1,5 +1,5 @@
 <?php
-namespace ddliu\Spider;
+namespace ddliu\spider;
 
 class Task implements \ArrayAccess {
 
@@ -7,8 +7,9 @@ class Task implements \ArrayAccess {
     const STATUS_WORKING = 1;
     const STATUS_PAUSE = 2;
     const STATUS_DONE = 3;
-    const STATUS_CANCLED = 4;
-    const STATUS_TERMINATED = 5;
+    const STATUS_RETRY = -2;
+    const STATUS_FAILED = -3;
+    const STATUS_IGNORED = -1;
 
     protected $status = self::STATUS_PENDING;
     protected $data;
@@ -19,14 +20,6 @@ class Task implements \ArrayAccess {
         $this->data = $data;
     }
 
-    public function set($key, $data) {
-
-    }
-
-    public function get($key) {
-
-    }
-
     public function start() {
         $this->status = self::STATUS_WORKING;
     }
@@ -35,8 +28,14 @@ class Task implements \ArrayAccess {
         $this->status = self::STATUS_DONE;
     }
 
+    public function ignore() {
+        $this->status = self::STATUS_IGNORED;
+    }
+
     public function isEnded() {
-        return $this->status === self::STATUS_DONE || $this->status === self::STATUS_CANCLED || $this->status === self::STATUS_TERMINATED;
+        return $this->status === self::STATUS_DONE || 
+               $this->status === self::STATUS_FAILED || 
+               $this->status === self::STATUS_IGNORED;
     }
 
     public function offsetExists($offset) {

@@ -2,10 +2,15 @@
 namespace ddliu\spider;
 use ddliu\spider\Pipe\PipeInterface;
 use ddliu\spider\Pipe\FunctionPipe;
+use ddliu\spider\Pipe\CombinedPipe;
+
 
 class Spider {
     protected $pipes = array();
     protected $tasks = array();
+    public function __construct() {
+        $this->pipe = new CombinedPipe();
+    }
     public function addTask($data) {
         if (!$data instanceof Task) {
             $task = new Task($data);
@@ -20,35 +25,19 @@ class Spider {
     }
 
     public function run() {
+        // TODO: scheduller
         while($task = array_shift($this->tasks)) {
             $this->process($task);
         }
     }
 
     public function pipe($pipe) {
-        $pipe = $this->makePipe($pipe);
-        $pipe->spider = $this;
-        $this->pipes[] = $pipe;
+        $this->pipe->pipe($pipe);
         return $this;
-    }
-
-    protected function makePipe($pipe) {
-        if ($pipe instanceof PipeInterface) {
-            return $pipe;
-        } elseif (is_callable($pipe)) {
-            return new FunctionPipe($pipe);
-        } else {
-            throw new SpiderException('Invalid pipe');
-        }
     }
 
     protected function process($task) {
         $task->start();
-        foreach ($this->pipes as $pipe) {
-            $pipe->pipe($task);
-            if ($task->isEnded()) {
-                break;
-            }
-        }
+        $this->pipe->run($task);
     }
 }

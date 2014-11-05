@@ -7,7 +7,7 @@ class EchoPipe extends BasePipe {
         $this->message = $message;
     }
 
-    public function pipe($task) {
+    public function run($task) {
         echo $this->message;
     }
 }

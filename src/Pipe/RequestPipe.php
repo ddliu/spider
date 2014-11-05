@@ -25,7 +25,7 @@ class RequestPipe extends BasePipe {
         );
     }
 
-    public function pipe($task) {
+    public function run($task) {
         $curl = curl_init();
 
         curl_setopt_array($curl, [

@@ -2,5 +2,6 @@
 namespace ddliu\spider\Pipe;
 
 interface PipeInterface {
-    public function pipe($task);
+    public function pipe($pipe);
+    public function run($task);
 }

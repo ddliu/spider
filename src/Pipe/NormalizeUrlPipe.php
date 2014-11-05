@@ -7,7 +7,7 @@ class NormalizeUrlPipe extends BasePipe {
         $this->options = $options;
     }
 
-    public function pipe($task) {
+    public function run($task) {
         $url = $task['url'];
         $base = ($task->parent && !empty($task->parent['url']))?$task->parent['url']:null;
         $url = Url::normalize($url, $base);
