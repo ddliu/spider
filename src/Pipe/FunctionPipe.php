@@ -1,6 +1,9 @@
 <?php
 namespace ddliu\spider\Pipe;
 
+/**
+ * Quickly create a pipe from a closure. Don't use it directly.
+ */
 class FunctionPipe extends BasePipe {
     protected $func;
 

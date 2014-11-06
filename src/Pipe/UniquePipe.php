@@ -1,6 +1,9 @@
 <?php
 namespace ddliu\spider\Pipe;
 
+/**
+ * Ingore duplicate tasks.
+ */
 class UniquePipe extends BasePipe {
     protected $keys = array();
     public function __construct($key = 'url') {

@@ -1,6 +1,9 @@
 <?php
 namespace ddliu\spider\Pipe;
 
+/**
+ * Combine pipes
+ */
 class CombinedPipe extends BasePipe {
     protected $pipes = array();
 
@@ -13,6 +16,8 @@ class CombinedPipe extends BasePipe {
     public function pipe($pipe) {
         $pipe = BasePipe::makePipe($pipe);
         $this->pipes[] = $pipe;
+
+        return $this;
     }
 
     public function run($task) {

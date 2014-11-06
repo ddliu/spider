@@ -8,9 +8,27 @@ use ddliu\spider\Pipe\CombinedPipe;
 class Spider {
     protected $pipes = array();
     protected $tasks = array();
-    public function __construct() {
+    protected $counter = array();
+    protected $limitCount = 0;
+    protected $startTime;
+    protected $stopped = false;
+
+    /**
+     * Optins
+     *  - limit: Maxmum tasks to run
+     *  - depth: Task fork depth
+     *  - timeout: Maxmum time to run
+     * @var array
+     */
+    protected $options = array();
+
+    public function __construct($options = array()) {
+        $this->startTime = microtime(true);
         $this->pipe = new CombinedPipe();
+        $this->pipe->spider = $this;
+        $this->options = $options;
     }
+
     public function addTask($data) {
         if (!$data instanceof Task) {
             $task = new Task($data);
@@ -26,9 +44,18 @@ class Spider {
 
     public function run() {
         // TODO: scheduller
-        while($task = array_shift($this->tasks)) {
+        while(!$this->stopped && $task = array_shift($this->tasks)) {
             $this->process($task);
         }
+
+        return $this;
+    }
+
+    public function stop($message = null) {
+        if ($message) {
+            echo $message."\n";
+        }
+        $this->stopped = true;
     }
 
     public function pipe($pipe) {
@@ -37,7 +64,61 @@ class Spider {
     }
 
     protected function process($task) {
+        // check for limit
+        if (!empty($this->options['limit']) && $this->limitCount >= $this->options['limit']) {
+            $this->stop('Stopped after processing '.$this->options['limit'].' tasks');
+            return;
+        }
+
         $task->start();
-        $this->pipe->run($task);
+        try {
+            $this->pipe->run($task);
+        } catch (\Exception $e) {
+            // TODO: log
+            echo $e.PHP_EOL;
+            $task->fail();
+        }
+        if ($task->getStatus() === Task::STATUS_WORKING) {
+            $task->done();
+        }
+
+        $status = $task->getStatus();
+
+        // limit counter
+        if ($status !== Task::STATUS_IGNORED) {
+            $this->limitCount++;
+        }
+
+        if (!isset($this->counter[$status])) {
+            $this->counter[$status] = 1;
+        } else {
+            $this->counter[$status]++;
+        }
+    }
+
+
+    public function report() {
+        $counter = $this->counter;
+        $counter[Task::STATUS_PENDING] = isset($counter[Task::STATUS_PENDING])?$counter[Task::STATUS_PENDING]:0 + count($this->tasks);
+        static $names = [
+            Task::STATUS_PENDING => 'Pending',
+            Task::STATUS_WORKING => 'Working',
+            Task::STATUS_PAUSE => 'Paused',
+            Task::STATUS_DONE => 'Done',
+            Task::STATUS_RETRY => 'Retry',
+            Task::STATUS_FAILED => 'Failed',
+            Task::STATUS_IGNORED => 'Ignored',
+        ];
+
+        $line = str_repeat('=', 25).PHP_EOL;
+        echo $line;
+        printf("Spider running for %ds\n", microtime(true) - $this->startTime);
+        echo $line;
+        foreach ($counter as $status => $count) {
+            echo $names[$status].': '.$count.PHP_EOL;
+        }
+        echo $line;
+
+        return $this;
     }
 }

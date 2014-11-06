@@ -1,6 +1,9 @@
 <?php
 namespace ddliu\spider\Pipe;
 
+/**
+ * The base pipe
+ */
 abstract class BasePipe implements PipeInterface {
     public $spider;
     protected $pipes = array();

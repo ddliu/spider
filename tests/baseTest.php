@@ -3,6 +3,7 @@ use ddliu\spider\Spider;
 use ddliu\spider\Pipe\EchoPipe;
 use ddliu\spider\Pipe\NormalizeUrlPipe;
 use ddliu\spider\Pipe\RequestPipe;
+use ddliu\spider\Pipe\RequeryPipe;
 
 class BaseTest extends PHPUnit_Framework_TestCase {
     public function testPipe() {
@@ -67,6 +68,40 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ->addTask([
                 'url' => 'http://httpbin.org/user-agent',
             ])
+        ->run()
+        ->report();
+    }
+
+    public function testRequeryPipe() {
+        $test = $this;
+        (new Spider())
+            ->pipe(new RequestPipe())
+            ->pipe(new RequeryPipe())
+            ->pipe(function($spider, $task) use ($test) {
+                $test->assertEquals('Example Domain', $task['$requery']->find('#<title>(.*)</title>#Uis')->extract(1));
+            })
+            ->addTask([
+                'url' => 'http://example.com/',
+            ])
         ->run();
+    }
+
+    public function testLimit() {
+        $counter = 0;
+        (new Spider([
+            'limit' => 999
+        ]))
+            ->pipe(function($spider, $task) use (&$counter) {
+                for ($i = 0; $i < 10; $i++) {
+                    $task->fork([]);
+                }
+                $counter++;
+            })
+            ->addTask([
+            ])
+        ->run()
+        ->report();
+
+        $this->assertEquals(999, $counter);
     }
 }

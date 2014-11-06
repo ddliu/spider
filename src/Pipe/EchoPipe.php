@@ -1,6 +1,9 @@
 <?php
 namespace ddliu\spider\Pipe;
 
+/**
+ * Echo message, for testing.
+ */
 class EchoPipe extends BasePipe {
     protected $message;
     public function __construct($message) {

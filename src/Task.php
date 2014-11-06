@@ -38,6 +38,14 @@ class Task implements \ArrayAccess {
                $this->status === self::STATUS_IGNORED;
     }
 
+    public function fail() {
+        $this->status = self::STATUS_FAILED;
+    }
+
+    public function getStatus() {
+        return $this->status;
+    }
+
     public function offsetExists($offset) {
         return isset($this->data[$offset]);
     }
