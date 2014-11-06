@@ -22,15 +22,15 @@ class IfPipe extends BasePipe {
         $this->elsePipe = $elsePipe;
     }
 
-    public function run($task) {
-        if (is_callable($this->condition) && call_user_func($this->condition, $this->spider, $task) ||
+    public function run($spider, $task) {
+        if (is_callable($this->condition) && call_user_func($this->condition, $spider, $task) ||
             $this->condition) {
             if ($this->pipe) {
-                $this->pipe->run($task);
+                $this->pipe->run($spider, $task);
             }
         } else {
             if ($this->elsePipe) {
-                $this->elsePipe->run($task);
+                $this->elsePipe->run($spider, $task);
             }
         }
     }

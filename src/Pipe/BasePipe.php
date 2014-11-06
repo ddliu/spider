@@ -5,10 +5,9 @@ namespace ddliu\spider\Pipe;
  * The base pipe
  */
 abstract class BasePipe implements PipeInterface {
-    public $spider;
     protected $pipes = array();
 
-    abstract public function run($task);
+    abstract public function run($spider, $task);
 
     public function pipe($pipe) {
         $pipe = self::makePipe($pipe);

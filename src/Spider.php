@@ -27,7 +27,6 @@ class Spider {
     public function __construct($options = array()) {
         $this->startTime = microtime(true);
         $this->pipe = new CombinedPipe();
-        $this->pipe->spider = $this;
         $this->options = $options;
         $this->logger = new Logger(isset($options['name'])?$options['name']:'ddliu.spider');
     }
@@ -81,7 +80,7 @@ class Spider {
 
         $task->start();
         try {
-            $this->pipe->run($task);
+            $this->pipe->run($this, $task);
         } catch (\Exception $e) {
             $task->fail($e);
         }

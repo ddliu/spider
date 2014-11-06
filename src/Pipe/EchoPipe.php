@@ -10,7 +10,7 @@ class EchoPipe extends BasePipe {
         $this->message = $message;
     }
 
-    public function run($task) {
+    public function run($spider, $task) {
         echo $this->message;
     }
 }

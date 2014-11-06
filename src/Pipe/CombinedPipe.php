@@ -20,16 +20,13 @@ class CombinedPipe extends BasePipe {
         return $this;
     }
 
-    public function run($task) {
+    public function run($spider, $task) {
         foreach ($this->pipes as $pipe) {
             if ($task->isEnded()) {
                 break;
             }
 
-            // inject spider
-            $pipe->spider = $this->spider;
-
-            $pipe->run($task);
+            $pipe->run($spider, $task);
         }
     }
 }

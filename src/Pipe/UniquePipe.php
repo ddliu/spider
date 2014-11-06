@@ -10,7 +10,7 @@ class UniquePipe extends BasePipe {
         $this->key = $key;
     }
 
-    public function run($task) {
+    public function run($spider, $task) {
         $id = $task[$this->key];
         if (isset($this->keys[$id])) {
             $task->ignore();
