@@ -4,6 +4,8 @@ use ddliu\spider\Pipe\EchoPipe;
 use ddliu\spider\Pipe\NormalizeUrlPipe;
 use ddliu\spider\Pipe\RequestPipe;
 use ddliu\spider\Pipe\RequeryPipe;
+use ddliu\spider\Pipe\IfPipe;
+use ddliu\spider\Pipe\IgnorePipe;
 
 class BaseTest extends PHPUnit_Framework_TestCase {
     public function testPipe() {
@@ -83,6 +85,32 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ->addTask([
                 'url' => 'http://example.com/',
             ])
+        ->run();
+    }
+
+    public function testIgnorePipe() {
+        $test = $this;
+        (new Spider())
+            ->pipe(new IgnorePipe())
+            ->pipe(function($spider, $task) use ($test) {
+                $this->assertTrue(false, 'should not come here');
+            })
+            ->addTask([
+            ])
+        ->run();
+    }
+
+    public function testIfPipe() {
+        $test = $this;
+        (new Spider())
+            ->pipe(new IfPipe(function($spider, $task) {
+                return true;
+            }, function($spider, $task) use ($test) {
+                $this->assertTrue(true);
+            }, function($spider, $task) use ($test) {
+                $this->assertTrue(false, 'should not come here!');
+            }))
+            ->addTask([])
         ->run();
     }
 
