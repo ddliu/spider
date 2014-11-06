@@ -21,14 +21,18 @@ class Task implements \ArrayAccess {
     }
 
     public function start() {
+        $this->spider->logger->addDebug('Task started');
         $this->status = self::STATUS_WORKING;
     }
 
     public function done() {
+        $this->spider->logger->addDebug('Task done');
         $this->status = self::STATUS_DONE;
     }
 
-    public function ignore() {
+    public function ignore($reason = null) {
+        $reason = $reason?:'Task ignored without reason';
+        $this->spider->logger->addInfo($reason);
         $this->status = self::STATUS_IGNORED;
     }
 
@@ -38,7 +42,9 @@ class Task implements \ArrayAccess {
                $this->status === self::STATUS_IGNORED;
     }
 
-    public function fail() {
+    public function fail($reason = null) {
+        $reason = $reason?:'Task failed without reason';
+        $this->spider->logger->addError($reason);
         $this->status = self::STATUS_FAILED;
     }
 

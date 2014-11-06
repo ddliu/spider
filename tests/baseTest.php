@@ -6,12 +6,21 @@ use ddliu\spider\Pipe\RequestPipe;
 use ddliu\spider\Pipe\RequeryPipe;
 use ddliu\spider\Pipe\IfPipe;
 use ddliu\spider\Pipe\IgnorePipe;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
+date_default_timezone_set('UTC');
 class BaseTest extends PHPUnit_Framework_TestCase {
+    private function newSpider($options = null) {
+        $spider = new Spider($options);
+        $spider->logger->pushHandler(new StreamHandler('php://stdout', Logger::INFO));
+
+        return $spider;
+    }
+
     public function testPipe() {
         $test = $this;
-        $spider = new Spider();
-        $spider
+        $this->newSpider()
             ->pipe(new EchoPipe("pipe1\n"))
             ->pipe(new EchoPipe("pipe2\n"))
             ->pipe(function($spider, $task) {
@@ -29,9 +38,8 @@ class BaseTest extends PHPUnit_Framework_TestCase {
 
     public function testNormalizeUrlPipe() {
         $test = $this;
-        $spider = new Spider();
         $counter = 0;
-        $spider
+        $this->newSpider()
             ->pipe(new NormalizeUrlPipe())
             ->pipe(function($spider, $task) use (&$counter, $test) {
                 if ($counter == 0) {
@@ -56,7 +64,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
 
     public function testRequestPipe() {
         $test = $this;
-        (new Spider())
+        $this->newSpider()
             ->pipe(new RequestPipe([
                 'useragent' => 'my spider',
             ]))
@@ -76,7 +84,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
 
     public function testRequeryPipe() {
         $test = $this;
-        (new Spider())
+        $this->newSpider()
             ->pipe(new RequestPipe())
             ->pipe(new RequeryPipe())
             ->pipe(function($spider, $task) use ($test) {
@@ -90,7 +98,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
 
     public function testIgnorePipe() {
         $test = $this;
-        (new Spider())
+        $this->newSpider()
             ->pipe(new IgnorePipe())
             ->pipe(function($spider, $task) use ($test) {
                 $this->assertTrue(false, 'should not come here');
@@ -102,7 +110,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
 
     public function testIfPipe() {
         $test = $this;
-        (new Spider())
+        $this->newSpider()
             ->pipe(new IfPipe(function($spider, $task) {
                 return true;
             }, function($spider, $task) use ($test) {
@@ -116,9 +124,9 @@ class BaseTest extends PHPUnit_Framework_TestCase {
 
     public function testLimit() {
         $counter = 0;
-        (new Spider([
+        $this->newSpider([
             'limit' => 999
-        ]))
+        ])
             ->pipe(function($spider, $task) use (&$counter) {
                 for ($i = 0; $i < 10; $i++) {
                     $task->fork([]);

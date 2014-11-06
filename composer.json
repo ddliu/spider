@@ -10,7 +10,8 @@
     ],
     "require": {
         "ddliu/requery": "~0.1",
-        "ddliu/normurl": "~0.1.1"
+        "ddliu/normurl": "~0.1.1",
+        "monolog/monolog": "~1.11"
     },
     "autoload": {
         "psr-4": {

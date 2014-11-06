@@ -3,6 +3,7 @@ namespace ddliu\spider;
 use ddliu\spider\Pipe\PipeInterface;
 use ddliu\spider\Pipe\FunctionPipe;
 use ddliu\spider\Pipe\CombinedPipe;
+use Monolog\Logger;
 
 
 class Spider {
@@ -12,6 +13,7 @@ class Spider {
     protected $limitCount = 0;
     protected $startTime;
     protected $stopped = false;
+    public $logger;
 
     /**
      * Optins
@@ -27,6 +29,12 @@ class Spider {
         $this->pipe = new CombinedPipe();
         $this->pipe->spider = $this;
         $this->options = $options;
+        $this->logger = new Logger(isset($options['name'])?$options['name']:'ddliu.spider');
+    }
+
+    public function setLogger($logger) {
+        $this->logger = $logger;
+        return $this;
     }
 
     public function addTask($data) {
@@ -66,7 +74,8 @@ class Spider {
     protected function process($task) {
         // check for limit
         if (!empty($this->options['limit']) && $this->limitCount >= $this->options['limit']) {
-            $this->stop('Stopped after processing '.$this->options['limit'].' tasks');
+            $this->logger->addWarning('Stopped after processing '.$this->options['limit'].' tasks');
+            $this->stop();
             return;
         }
 
@@ -74,9 +83,7 @@ class Spider {
         try {
             $this->pipe->run($task);
         } catch (\Exception $e) {
-            // TODO: log
-            echo $e.PHP_EOL;
-            $task->fail();
+            $task->fail($e);
         }
         if ($task->getStatus() === Task::STATUS_WORKING) {
             $task->done();
