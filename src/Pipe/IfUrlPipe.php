@@ -3,7 +3,7 @@ namespace ddliu\spider\Pipe;
 
 class IfUrlPipe extends BasePipe {
     protected $realPipe;
-    public function __construct($condition, $pipe, $elsePipe) {
+    public function __construct($condition, $pipe, $elsePipe = null) {
         $this->realPipe = new IfPipe(function($spider, $task) use ($condition) {
             return preg_match($condition, $task['url']);
         }, $pipe, $elsePipe);
