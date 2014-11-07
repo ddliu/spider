@@ -25,12 +25,12 @@ class Task implements \ArrayAccess {
     }
 
     public function start() {
-        $this->spider->logger->addDebug('Task started');
+        $this->spider->logger->addDebug('Task started: '.$this->getNameForDisplay());
         $this->status = self::STATUS_WORKING;
     }
 
     public function done() {
-        $this->spider->logger->addDebug('Task done');
+        $this->spider->logger->addDebug('Task done: '.$this->getNameForDisplay());
         $this->status = self::STATUS_DONE;
     }
 
