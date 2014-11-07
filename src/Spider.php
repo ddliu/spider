@@ -50,6 +50,7 @@ class Spider {
     }
 
     public function run() {
+        $this->logger->addInfo('spider started');
         // TODO: scheduller
         while(!$this->stopped && $task = array_shift($this->tasks)) {
             $this->process($task);

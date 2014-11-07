@@ -20,6 +20,10 @@ class Task implements \ArrayAccess {
         $this->data = $data;
     }
 
+    protected function getNameForDisplay() {
+        return isset($this->data['url'])?$this->data['url']:'';
+    }
+
     public function start() {
         $this->spider->logger->addDebug('Task started');
         $this->status = self::STATUS_WORKING;
@@ -31,8 +35,9 @@ class Task implements \ArrayAccess {
     }
 
     public function ignore($reason = null) {
-        $reason = $reason?:'Task ignored without reason';
-        $this->spider->logger->addInfo($reason);
+        $reason = $reason?:'';
+
+        $this->spider->logger->addInfo('Task ignored: '.$this->getNameForDisplay()."\t".$reason);
         $this->status = self::STATUS_IGNORED;
     }
 
@@ -43,8 +48,8 @@ class Task implements \ArrayAccess {
     }
 
     public function fail($reason = null) {
-        $reason = $reason?:'Task failed without reason';
-        $this->spider->logger->addError($reason);
+        $reason = $reason?:'';
+        $this->spider->logger->addError('Task failed: '.$this->getNameForDisplay()."\t".$reason);
         $this->status = self::STATUS_FAILED;
     }
 
