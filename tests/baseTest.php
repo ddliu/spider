@@ -5,6 +5,7 @@ use ddliu\spider\Pipe\NormalizeUrlPipe;
 use ddliu\spider\Pipe\RequestPipe;
 use ddliu\spider\Pipe\RequeryPipe;
 use ddliu\spider\Pipe\IfPipe;
+use ddliu\spider\Pipe\IfUrlPipe;
 use ddliu\spider\Pipe\IgnorePipe;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -119,6 +120,20 @@ class BaseTest extends PHPUnit_Framework_TestCase {
                 $this->assertTrue(false, 'should not come here!');
             }))
             ->addTask([])
+        ->run();
+    }
+
+    public function testIfUrlPipe() {
+        $this->newSpider()
+            ->pipe(new IfUrlPipe('/abc/', function($spider, $task) {
+                $spider->logger->addInfo('IfUrlPipe passed');
+                $this->assertTrue(true);
+            }, function($spider, $task) {
+                $this->assertTrue(false, 'should not come here!');
+            }))
+            ->addTask([
+                'url'=> 'cbabcdef'
+            ])
         ->run();
     }
 
