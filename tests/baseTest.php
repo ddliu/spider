@@ -1,4 +1,10 @@
 <?php
+/**
+ * spider
+ * @copyright 2014 Liu Dong <ddliuhb@gmail.com>
+ * @license MIT
+ */
+
 use ddliu\spider\Spider;
 use ddliu\spider\Pipe\EchoPipe;
 use ddliu\spider\Pipe\NormalizeUrlPipe;

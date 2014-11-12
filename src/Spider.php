@@ -1,4 +1,10 @@
 <?php
+/**
+ * spider
+ * @copyright 2014 Liu Dong <ddliuhb@gmail.com>
+ * @license MIT
+ */
+
 namespace ddliu\spider;
 use ddliu\spider\Pipe\PipeInterface;
 use ddliu\spider\Pipe\FunctionPipe;
