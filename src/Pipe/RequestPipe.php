@@ -13,6 +13,8 @@ class RequestPipe extends BasePipe {
      *  - auto_referer: 
      *  - referer
      *  - useragent
+     *  - timeout
+     *  ... or CURLOPT_XXX
      */
     public function __construct($options = array()) {
         $this->options = array_merge($this->getDefaultOptions(), $options);
@@ -32,7 +34,15 @@ class RequestPipe extends BasePipe {
             CURLOPT_URL => $task['url'],
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_USERAGENT => $this->options['useragent'],
+            CURLOPT_TIMEOUT => isset($this->options['timeout'])?$this->options['timeout']:0,
         ]);
+
+        foreach ($this->options as $key => $value) {
+            // assume it's a curl option
+            if (is_int($key)) {
+                curl_setopt($curl, $key, $value);
+            }
+        }
 
         if ($this->options['auto_referer'] && $task->parent) {
             $referer = $task->parent['url'];
@@ -41,7 +51,19 @@ class RequestPipe extends BasePipe {
 
         $result = curl_exec($curl);
 
-        // TODO: validation & stats
+        $errno = curl_errno($curl);
+        if ($errno) {
+            $err = curl_error($curl);
+            throw new \Exception('Request failed: #'.$errno.' '.$err);
+        }
+
+        $info = curl_getinfo($curl);
+        if ($info['http_code'] != 200) {
+            curl_close($curl);
+            throw new \Exception('Request failed with status code: '.$info['http_code']);
+        }
+
+        curl_close($curl);
 
         $task['content'] = $result;
     }

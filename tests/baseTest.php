@@ -67,6 +67,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
         $test = $this;
         $this->newSpider()
             ->pipe(new RequestPipe([
+                'timeout' => 10,
                 'useragent' => 'my spider',
             ]))
             ->pipe(function($spider, $task) {
