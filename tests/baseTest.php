@@ -7,6 +7,7 @@ use ddliu\spider\Pipe\RequeryPipe;
 use ddliu\spider\Pipe\IfPipe;
 use ddliu\spider\Pipe\IfUrlPipe;
 use ddliu\spider\Pipe\IgnorePipe;
+use ddliu\spider\Pipe\ReportPipe;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -137,6 +138,35 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ])
         ->run();
     }
+
+    public function testReportPipeCount() {
+        $spider = $this->newSpider()
+            ->pipe(new ReportPipe([
+                'count' => 2
+            ]));
+
+        for ($i = 0; $i < 10; $i++) {
+            $spider->addTask([]);
+        }
+
+        $spider->run()->report();
+    }
+
+    public function testReportPipeSeconds() {
+        $spider = $this->newSpider()
+            ->pipe(new ReportPipe([
+                'seconds' => 2
+            ]))
+            ->pipe(function($spider, $task) {
+                sleep(1);
+            });
+
+        for ($i = 0; $i < 5; $i++) {
+            $spider->addTask([]);
+        }
+
+        $spider->run()->report();
+    }    
 
     public function testLimit() {
         $counter = 0;

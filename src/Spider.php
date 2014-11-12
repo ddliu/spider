@@ -60,9 +60,10 @@ class Spider {
     }
 
     public function stop($message = null) {
-        if ($message) {
-            echo $message."\n";
+        if (!$message) {
+            $message = '';
         }
+        $this->logger->addInfo('Spider stopped: '.$message);
         $this->stopped = true;
     }
 
@@ -117,14 +118,15 @@ class Spider {
             Task::STATUS_IGNORED => 'Ignored',
         ];
 
-        $line = str_repeat('=', 25).PHP_EOL;
-        echo $line;
-        printf("Spider running for %ds\n", microtime(true) - $this->startTime);
-        echo $line;
+        $message = '';
+        $message .= sprintf("SPIDER REPORT - Time: %.2fs", microtime(true) - $this->startTime);
         foreach ($counter as $status => $count) {
-            echo $names[$status].': '.$count.PHP_EOL;
+            if ($count) {
+                $message .= '; '.$names[$status].': '.$count;
+            }
         }
-        echo $line;
+
+        $this->logger->addInfo($message);
 
         return $this;
     }
