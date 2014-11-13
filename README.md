@@ -16,26 +16,22 @@ composer require ddliu/spider
 
 ```php
 use ddliu\spider\Spider;
+use ddliu\spider\Pipe\NormalizeUrlPipe;
+use ddliu\spider\Pipe\RequestPipe;
+use ddliu\spider\Pipe\DomCrawlerPipe;
 
 (new Spider())
-    // a simple request pipe
+    ->pipe(new NormalizeUrlPipe())
+    ->pipe(new RequestPipe())
+    ->pipe(new DomCrawlerPipe())
     ->pipe(function($spider, $task) {
-        $task['content'] = file_get_contents($task['url']);
-    })
-    ->pipe(function($spider, $task) {
-        // extract all links
-        // ...
-        foreach ($links as $link) {
-            // start a new task
-            $task->fork(array(
-                'url' => $link['url']
-            ));
-        }
+        $task['$dom']->filter('a')->each(function($a) use ($task) {
+            $href = $a->attr('href');
+            $task->fork($href);
+        })
     })
     // the entry task
-    ->addTask(array(
-        'url' => 'http://example.com',
-    ))
+    ->addTask('http://example.com')
     ->run()
     ->report();
 ```
@@ -111,6 +107,10 @@ Normalize `$task['url']`.
 ```php
 new NormalizeUrlPipe()
 ```
+
+### DomCrawlerPipe
+
+Create a [DomCrawler](https://github.com/symfony/DomCrawler) from `$task['content']`. Access it with `$task['$dom']` in following pipes.
 
 ### ReportPipe
 
