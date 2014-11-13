@@ -125,7 +125,9 @@ class Spider {
         ];
 
         $message = '';
-        $message .= sprintf("SPIDER REPORT - Time: %.2fs", microtime(true) - $this->startTime);
+        $mem = memory_get_usage(true) / (1024 * 1024);
+        $memPeak = memory_get_peak_usage(true) / (1024 * 1024);
+        $message .= sprintf("SPIDER REPORT - Time: %.2fs; Mem: %.2fM; Peak: %.2fM", microtime(true) - $this->startTime, $mem, $memPeak);
         foreach ($counter as $status => $count) {
             if ($count) {
                 $message .= '; '.$names[$status].': '.$count;

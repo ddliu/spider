@@ -30,7 +30,7 @@ class Task implements \ArrayAccess {
         } elseif (!is_array($data)) {
             throw new \Exception('Invalid task data');
         }
-        
+
         $this->data = $data;
     }
 
@@ -46,13 +46,17 @@ class Task implements \ArrayAccess {
     public function done() {
         $this->spider->logger->addDebug('Task done: '.$this->getNameForDisplay());
         $this->status = self::STATUS_DONE;
+
+        $this->end();
     }
 
     public function ignore($reason = null) {
         $reason = $reason?:'';
 
-        $this->spider->logger->addInfo('Task ignored: '.$this->getNameForDisplay()."\t".$reason);
+        $this->spider->logger->addDebug('Task ignored: '.$this->getNameForDisplay()."\t".$reason);
         $this->status = self::STATUS_IGNORED;
+
+        $this->end();
     }
 
     public function isEnded() {
@@ -65,6 +69,12 @@ class Task implements \ArrayAccess {
         $reason = $reason?:'';
         $this->spider->logger->addError('Task failed: '.$this->getNameForDisplay()."\t".$reason);
         $this->status = self::STATUS_FAILED;
+
+        $this->end();
+    }
+
+    protected function end() {
+        unset($this->parent, $this->spider);
     }
 
     public function getStatus() {
