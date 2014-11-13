@@ -4,17 +4,17 @@ require(__DIR__.'/../vendor/autoload.php');
 use ddliu\spider\Spider;
 use ddliu\spider\Pipe\NormalizeUrlPipe;
 use ddliu\spider\Pipe\RequestPipe;
-use ddliu\spider\Pipe\RequeryPipe;
+use ddliu\spider\Pipe\DomCrawlerPipe;
 
 (new Spider())
     ->pipe(new NormalizeUrlPipe())
     ->pipe(new RequestPipe())
-    ->pipe(new RequeryPipe())
+    ->pipe(new DomCrawlerPipe())
     ->pipe(function($spider, $task) {
         if (!strpos($task['url'], 'tab=repositories')) return;
-        $task['$requery']->mustFindAll('#<h3 class="repo-list-name">\s*<a href="(.*)">#Us')
+        $task['$dom']->filter('h3.repo-list-name>a')
             ->each(function($context) use ($task) {
-                $url = $context->extract(1);
+                $url = $context->attr('href');
                 $task->fork([
                     'url' => $url
                 ]);
@@ -22,10 +22,7 @@ use ddliu\spider\Pipe\RequeryPipe;
     })
     ->pipe(function($spider, $task) {
         if (!preg_match('#^https://github.com/[\w_]+/[\w_]+$#', $task['url'])) return;
-        $issueCount = $task['$requery']
-            ->mustFind('#<li class="commits">.*</li>#Us')
-            ->mustFind('#>\s*(\d)+\s*</span>#s')
-            ->extract(1);
+        $issueCount = trim($task['$dom']->filter('li.commits span.num')->text());
         $spider->logger->addInfo($task['url'].' has '.$issueCount.' commits');
     })
     ->addTask([
