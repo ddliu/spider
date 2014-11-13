@@ -23,6 +23,14 @@ class Task implements \ArrayAccess {
     public $spider;
 
     public function __construct($data) {
+        if (is_string($data)) {
+            $data = array(
+                'url' => $data
+            );
+        } elseif (!is_array($data)) {
+            throw new \Exception('Invalid task data');
+        }
+        
         $this->data = $data;
     }
 

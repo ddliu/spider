@@ -15,9 +15,7 @@ use ddliu\spider\Pipe\DomCrawlerPipe;
         $task['$dom']->filter('h3.repo-list-name>a')
             ->each(function($context) use ($task) {
                 $url = $context->attr('href');
-                $task->fork([
-                    'url' => $url
-                ]);
+                $task->fork($url);
             });
     })
     ->pipe(function($spider, $task) {
@@ -25,8 +23,6 @@ use ddliu\spider\Pipe\DomCrawlerPipe;
         $issueCount = trim($task['$dom']->filter('li.commits span.num')->text());
         $spider->logger->addInfo($task['url'].' has '.$issueCount.' commits');
     })
-    ->addTask([
-        'url' => 'https://github.com/ddliu?tab=repositories',
-    ])
+    ->addTask('https://github.com/ddliu?tab=repositories')
     ->run()
     ->report();

@@ -54,9 +54,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
                 if ($counter == 0) {
                     $test->assertEquals($task['url'], 'http://example.com/a/b.html');
 
-                    $task->fork([
-                        'url'=> 'c.html'
-                    ]);
+                    $task->fork('c.html');
                 } elseif ($counter == 1) {
                     $test->assertEquals($task['url'], 'http://example.com/a/c.html');
                 }
@@ -65,9 +63,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ->pipe(function($spider, $task) {
                 echo $task['url'].PHP_EOL;
             })
-            ->addTask([
-                'url' => 'http://example.com/a/b.html',
-            ])
+            ->addTask('http://example.com/a/b.html')
         ->run();
     }
 
@@ -85,9 +81,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
                 $result = json_decode($task['content'], true);
                 $test->assertEquals('my spider', $result['user-agent']);
             })
-            ->addTask([
-                'url' => 'http://httpbin.org/user-agent',
-            ])
+            ->addTask('http://httpbin.org/user-agent')
         ->run()
         ->report();
     }
@@ -100,9 +94,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ->pipe(function($spider, $task) use ($test) {
                 $test->assertEquals('Example Domain', $task['$requery']->find('#<title>(.*)</title>#Uis')->extract(1));
             })
-            ->addTask([
-                'url' => 'http://example.com/',
-            ])
+            ->addTask('http://example.com/')
         ->run();
     }
 
@@ -115,9 +107,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
                 $title = $task['$dom']->filter('title')->text();
                 $test->assertEquals('Example Domain', $title);
             })
-            ->addTask([
-                'url' => 'http://example.com/',
-            ])
+            ->addTask('http://example.com/')
         ->run();
     }
 
@@ -155,9 +145,7 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             }, function($spider, $task) {
                 $this->assertTrue(false, 'should not come here!');
             }))
-            ->addTask([
-                'url'=> 'cbabcdef'
-            ])
+            ->addTask('cbabcdef')
         ->run();
     }
 
