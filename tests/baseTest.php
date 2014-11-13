@@ -10,6 +10,7 @@ use ddliu\spider\Pipe\EchoPipe;
 use ddliu\spider\Pipe\NormalizeUrlPipe;
 use ddliu\spider\Pipe\RequestPipe;
 use ddliu\spider\Pipe\RequeryPipe;
+use ddliu\spider\Pipe\DomCrawlerPipe;
 use ddliu\spider\Pipe\IfPipe;
 use ddliu\spider\Pipe\IfUrlPipe;
 use ddliu\spider\Pipe\IgnorePipe;
@@ -98,6 +99,21 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ->pipe(new RequeryPipe())
             ->pipe(function($spider, $task) use ($test) {
                 $test->assertEquals('Example Domain', $task['$requery']->find('#<title>(.*)</title>#Uis')->extract(1));
+            })
+            ->addTask([
+                'url' => 'http://example.com/',
+            ])
+        ->run();
+    }
+
+    public function testDomCrawlerPipe() {
+        $test = $this;
+        $this->newSpider()
+            ->pipe(new RequestPipe())
+            ->pipe(new DomCrawlerPipe())
+            ->pipe(function($spider, $task) use ($test) {
+                $title = $task['$dom']->filter('title')->text();
+                $test->assertEquals('Example Domain', $title);
             })
             ->addTask([
                 'url' => 'http://example.com/',
