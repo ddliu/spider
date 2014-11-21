@@ -1,4 +1,4 @@
-# Spider
+# Spider [![Build Status](https://travis-ci.org/ddliu/spider.svg)](https://travis-ci.org/ddliu/spider)
 
 A flexible spider in PHP.
 
@@ -11,6 +11,15 @@ A spider contains many processors called `pipes`, you can pass as many tasks as 
 ```
 composer require ddliu/spider
 ```
+
+## Requirements
+
+- PHP5.3+
+- curl(RequestPipe)
+
+## Dependencies
+
+See `composer.json`.
 
 ## Usage
 
@@ -121,3 +130,9 @@ new ReportPipe(array(
     'seconds' => 600
 ))
 ```
+
+## TODO/Ideas
+
+- Retry on failure.
+- Real world examples.
+- Running tasks concurrently.(With pthread?)
