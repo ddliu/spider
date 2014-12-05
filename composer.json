@@ -13,7 +13,8 @@
         "ddliu/normurl": "~0.1.1",
         "monolog/monolog": "~1.11",
         "symfony/dom-crawler": "~2.5",
-        "symfony/css-selector": "~2.5"
+        "symfony/css-selector": "~2.5",
+        "ddliu/filecache": "~0.1"
     },
     "autoload": {
         "psr-4": {

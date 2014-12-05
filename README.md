@@ -109,6 +109,19 @@ new RequestPipe(array(
 ));
 ```
 
+### FileCachePipe
+
+Cache a pipe (e.g. `RequestPipe`).
+
+```php
+$requestPipe = new RequestPipe();
+$cacheForReqPipe = new FileCachePipe($requestPipe, [
+    'input' => 'url',
+    'output' => 'content',
+    'root' => '/path/to/cache/root',
+]);
+```
+
 ### NormalizeUrlPipe
 
 Normalize `$task['url']`.

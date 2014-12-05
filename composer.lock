@@ -4,8 +4,41 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7de46fb23a80deac16f2b1ecfa498ea7",
+    "hash": "8397a324533408a267ada8a5b16d09f5",
     "packages": [
+        {
+            "name": "ddliu/filecache",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddliu/php-filecache.git",
+                "reference": "a2ef0b4ab85831a3e04ec7ccf2b68b165e2dee94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddliu/php-filecache/zipball/a2ef0b4ab85831a3e04ec7ccf2b68b165e2dee94",
+                "reference": "a2ef0b4ab85831a3e04ec7ccf2b68b165e2dee94",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ddliu\\filecache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "dong",
+                    "email": "ddliuhb@gmail.com"
+                }
+            ],
+            "description": "Cache with file system",
+            "time": "2014-12-05 09:30:26"
+        },
         {
             "name": "ddliu/normurl",
             "version": "v0.1.1",

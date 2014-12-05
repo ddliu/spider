@@ -15,6 +15,7 @@ use ddliu\spider\Pipe\IfPipe;
 use ddliu\spider\Pipe\IfUrlPipe;
 use ddliu\spider\Pipe\IgnorePipe;
 use ddliu\spider\Pipe\ReportPipe;
+use ddliu\spider\Pipe\FileCachePipe;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -84,6 +85,29 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ->addTask('http://httpbin.org/user-agent')
         ->run()
         ->report();
+    }
+
+    public function testFileCachePipe() {
+        $reqPipe = new RequestPipe([
+            'timeout' => 10,
+            'useragent' => 'my spider',
+        ]);
+
+        $cacheForReq = new FileCachePipe($reqPipe, [
+            'input' => 'url',
+            'output' => 'content',
+            'root' => __DIR__ . '/cache'
+        ]);
+
+        $this->newSpider()
+            ->pipe($cacheForReq)
+            ->pipe(function($spider, $task) {
+                // TODO: add assertions
+            })
+            ->addTask('http://example.com/')
+            ->addTask('http://example.com/')
+            ->addTask('http://example.com/')
+        ->run();
     }
 
     public function testRequeryPipe() {
