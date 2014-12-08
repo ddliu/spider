@@ -23,14 +23,18 @@ class IfPipe extends BasePipe {
             $elsePipe = self::makePipe($elsePipe);
         }
 
+        $callable = is_callable($condition);
+        if (!$callable) {
+            $condition = (bool) $condition;
+        }
+
         $this->condition = $condition;
         $this->pipe = $pipe;
         $this->elsePipe = $elsePipe;
     }
 
     public function run($spider, $task) {
-        if (is_callable($this->condition) && call_user_func($this->condition, $spider, $task) ||
-            $this->condition) {
+        if ($this->condition === true || (!is_bool($this->condition) && call_user_func($this->condition, $spider, $task))) {
             if ($this->pipe) {
                 $this->pipe->run($spider, $task);
             }

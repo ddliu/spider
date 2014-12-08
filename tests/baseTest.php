@@ -20,7 +20,6 @@ use ddliu\spider\Pipe\RetryPipe;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-date_default_timezone_set('UTC');
 class BaseTest extends PHPUnit_Framework_TestCase {
     private function newSpider($options = null) {
         $spider = new Spider($options);
