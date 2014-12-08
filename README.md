@@ -98,6 +98,14 @@ class MyPipe extends BasePipe {
 
 ## Useful Pipes
 
+### NormalizeUrlPipe
+
+Normalize `$task['url']`.
+
+```php
+new NormalizeUrlPipe()
+```
+
 ### RequestPipe
 
 Start an HTTP request with `$task['url']` and save the result in `$task['content']`.
@@ -122,12 +130,15 @@ $cacheForReqPipe = new FileCachePipe($requestPipe, [
 ]);
 ```
 
-### NormalizeUrlPipe
+### RetryPipe
 
-Normalize `$task['url']`.
+Retry on failure.
 
 ```php
-new NormalizeUrlPipe()
+$requestPipe = new RequestPipe();
+$retryForReqPipe = new RetryPipe($requestPipe, [
+    'count' => 10,
+]);
 ```
 
 ### DomCrawlerPipe
@@ -146,6 +157,5 @@ new ReportPipe(array(
 
 ## TODO/Ideas
 
-- Retry on failure.
 - Real world examples.
 - Running tasks concurrently.(With pthread?)

@@ -16,6 +16,7 @@ use ddliu\spider\Pipe\IfUrlPipe;
 use ddliu\spider\Pipe\IgnorePipe;
 use ddliu\spider\Pipe\ReportPipe;
 use ddliu\spider\Pipe\FileCachePipe;
+use ddliu\spider\Pipe\RetryPipe;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -107,6 +108,19 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             ->addTask('http://example.com/')
             ->addTask('http://example.com/')
             ->addTask('http://example.com/')
+        ->run();
+    }
+
+    public function testRetryPipe() {
+        $counter = 0;
+
+        $this->newSpider()
+            ->pipe(new RetryPipe(function($spider, $task) use (&$counter) {
+                if ($counter < 10) {
+                    throw new \Exception("kill it");
+                }
+            }, array('count' => 13)))
+            ->addTask('test')
         ->run();
     }
 
