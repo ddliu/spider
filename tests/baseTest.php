@@ -86,29 +86,6 @@ class BaseTest extends PHPUnit_Framework_TestCase {
         ->report();
     }
 
-    public function testFileCachePipe() {
-        $reqPipe = new RequestPipe([
-            'timeout' => 10,
-            'useragent' => 'my spider',
-        ]);
-
-        $cacheForReq = new FileCachePipe($reqPipe, [
-            'input' => 'url',
-            'output' => 'content',
-            'root' => __DIR__ . '/cache'
-        ]);
-
-        $this->newSpider()
-            ->pipe($cacheForReq)
-            ->pipe(function($spider, $task) {
-                // TODO: add assertions
-            })
-            ->addTask('http://example.com/')
-            ->addTask('http://example.com/')
-            ->addTask('http://example.com/')
-        ->run();
-    }
-
     public function testRetryPipe() {
         $counter = 0;
 
