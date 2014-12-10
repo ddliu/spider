@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "ddliu/filecache",
-            "version": "v0.1.1",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ddliu/php-filecache.git",
-                "reference": "3bd6c55f0ae696d328a225bda8f72551f1cf31b1"
+                "reference": "20c2217c5de689cd916b94acf903a180383d3392"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ddliu/php-filecache/zipball/3bd6c55f0ae696d328a225bda8f72551f1cf31b1",
-                "reference": "3bd6c55f0ae696d328a225bda8f72551f1cf31b1",
+                "url": "https://api.github.com/repos/ddliu/php-filecache/zipball/20c2217c5de689cd916b94acf903a180383d3392",
+                "reference": "20c2217c5de689cd916b94acf903a180383d3392",
                 "shasum": ""
             },
             "type": "library",
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "Cache with file system",
-            "time": "2014-12-09 15:56:22"
+            "time": "2014-12-10 10:53:16"
         },
         {
             "name": "ddliu/normurl",
