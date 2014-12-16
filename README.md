@@ -155,6 +155,16 @@ new ReportPipe(array(
 ))
 ```
 
+## Logging
+
+`$spider->logger` is an instance of `Monolog\Logger`. You can add logging handlers to it before start:
+
+```
+use Monolog\Handler\StreamHandler;
+
+$spider->logger->pushHandler(new StreamHandler('path/to/your.log', Logger::WARNING));
+```
+
 ## TODO/Ideas
 
 - Real world examples.
