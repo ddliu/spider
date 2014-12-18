@@ -30,6 +30,7 @@ class RequestPipe extends BasePipe {
         return array(
             'useragent' => 'ddliu/spider',
             'auto_referer' => true,
+            'timeout' => 60,
         );
     }
 
