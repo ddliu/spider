@@ -6,14 +6,12 @@
  */
 
 namespace ddliu\spider\Pipe;
-use ddliu\wildcards\Wildcards;
 
-class IfUrlPipe extends BasePipe {
+class IfUrlRegexpPipe extends BasePipe {
     protected $realPipe;
     public function __construct($condition, $pipe, $elsePipe = null) {
-        $wildcards = new Wildcards($condition);
-        $this->realPipe = new IfPipe(function($spider, $task) use ($wildcards) {
-            return $wildcards->match($task['url']);
+        $this->realPipe = new IfPipe(function($spider, $task) use ($condition) {
+            return preg_match($condition, $task['url']);
         }, $pipe, $elsePipe);
     }
 

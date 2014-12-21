@@ -11,7 +11,6 @@ use ddliu\spider\Pipe\NormalizeUrlPipe;
 use ddliu\spider\Pipe\RequestPipe;
 use ddliu\spider\Pipe\RequeryPipe;
 use ddliu\spider\Pipe\DomCrawlerPipe;
-use ddliu\spider\Pipe\IfUrlPipe;
 use ddliu\spider\Pipe\IgnorePipe;
 use ddliu\spider\Pipe\ReportPipe;
 use ddliu\spider\Pipe\FileCachePipe;
@@ -133,18 +132,6 @@ class BaseTest extends PHPUnit_Framework_TestCase {
             })
             ->addTask([
             ])
-        ->run();
-    }
-
-    public function testIfUrlPipe() {
-        $this->newSpider()
-            ->pipe(new IfUrlPipe('/abc/', function($spider, $task) {
-                $spider->logger->addInfo('IfUrlPipe passed');
-                $this->assertTrue(true);
-            }, function($spider, $task) {
-                $this->assertTrue(false, 'should not come here!');
-            }))
-            ->addTask('cbabcdef')
         ->run();
     }
 

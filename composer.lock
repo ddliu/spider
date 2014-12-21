@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8397a324533408a267ada8a5b16d09f5",
+    "hash": "0f13ed627ecced2ecf6d11f1065d155c",
     "packages": [
         {
             "name": "ddliu/filecache",
@@ -104,6 +104,39 @@
             ],
             "description": "Query text data with the power of Regular Expression.",
             "time": "2014-11-03 15:20:16"
+        },
+        {
+            "name": "ddliu/wildcards",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ddliu/php-wildcards.git",
+                "reference": "01c96d64fb4708ae947a6a30dd5e4e070e1b0291"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ddliu/php-wildcards/zipball/01c96d64fb4708ae947a6a30dd5e4e070e1b0291",
+                "reference": "01c96d64fb4708ae947a6a30dd5e4e070e1b0291",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ddliu\\wildcards\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "dong",
+                    "email": "ddliuhb@gmail.com"
+                }
+            ],
+            "description": "Simple wildcards",
+            "time": "2014-12-21 15:05:06"
         },
         {
             "name": "monolog/monolog",
@@ -325,6 +358,7 @@
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }
