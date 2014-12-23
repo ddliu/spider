@@ -35,9 +35,12 @@ class IconvPipe extends BasePipe {
         if (preg_match('#<meta\s+[^>]*\s*charset\s*=\s*["\']([a-z0-9-]{3,15})["\']#Uis', $content, $match)) {
             $encoding = $this->normalizeEncoding($match[1]);
             return $encoding;
+        } elseif (preg_match('#<meta\s+http-equiv="Content-Type"\s+content="[^"]+charset=([a-z0-9-]{3,15})"#Uis', $content, $match)) {
+            $encoding = $this->normalizeEncoding($match[1]);
+            return $encoding;
         }
 
-        $encoding = mb_detect_encoding($content);var_dump($encoding);
+        $encoding = mb_detect_encoding($content);
         if ($encoding) {
             return $this->normalizeEncoding($encoding);
         }
