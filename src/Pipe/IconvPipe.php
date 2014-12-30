@@ -8,6 +8,10 @@
 namespace ddliu\spider\Pipe;
 
 class IconvPipe extends BasePipe {
+    public static $TRANSFER_ENCODINGS = array(
+        'GB2312' => 'GBK',
+    );
+
     public function __construct($options = array())
     {
         $this->options = array_merge([
@@ -32,17 +36,23 @@ class IconvPipe extends BasePipe {
     }
 
     protected function detectEncoding($content) {
+        $encoding = false;
         if (preg_match('#<meta\s+[^>]*\s*charset\s*=\s*["\']([a-z0-9-]{3,15})["\']#Uis', $content, $match)) {
-            $encoding = $this->normalizeEncoding($match[1]);
-            return $encoding;
+            $encoding = $match[1];
         } elseif (preg_match('#<meta\s+http-equiv="Content-Type"\s+content="[^"]+charset=([a-z0-9-]{3,15})"#Uis', $content, $match)) {
-            $encoding = $this->normalizeEncoding($match[1]);
-            return $encoding;
+            $encoding = $match[1];
+        } else {
+            $encoding = mb_detect_encoding($content);
         }
 
-        $encoding = mb_detect_encoding($content);
         if ($encoding) {
-            return $this->normalizeEncoding($encoding);
+            $encoding = $this->normalizeEncoding($encoding);
+
+            if (isset(self::$TRANSFER_ENCODINGS[$encoding])) {
+                $encoding = self::$TRANSFER_ENCODINGS[$encoding];
+            }
+
+            return $encoding;
         }
 
         return false;
