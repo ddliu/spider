@@ -169,3 +169,7 @@ $spider->logger->pushHandler(new StreamHandler('path/to/your.log', Logger::WARNI
 
 - Real world examples.
 - Running tasks concurrently.(With pthread?)
+
+## Alternate
+
+Use [http://github.com/ddliu/go-spider](golang version) for better performance!
