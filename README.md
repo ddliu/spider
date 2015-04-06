@@ -172,4 +172,4 @@ $spider->logger->pushHandler(new StreamHandler('path/to/your.log', Logger::WARNI
 
 ## Alternate
 
-Use [http://github.com/ddliu/go-spider](golang version) for better performance!
+Use [golang version](http://github.com/ddliu/go-spider) for better performance!
